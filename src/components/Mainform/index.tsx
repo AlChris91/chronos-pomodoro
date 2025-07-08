@@ -57,9 +57,15 @@ export function MainForm() {
     setState(prevState => {
       return {
         ...prevState,
-        acitivetask: null,
+        activeTask: null,
         secondsRemaining: 0,
-        formatedSecondsRemaining: '00:00 ',
+        formatedSecondsRemaining: '00:00',
+        task: prevState.task.map(task => {
+          if (prevState.activeTask && prevState.activeTask.id === task.id) {
+            return { ...task, interruptDate: Date.now() };
+          }
+          return task;
+        }),
       };
     });
   }
@@ -72,7 +78,7 @@ export function MainForm() {
           labelText='Task'
           placeholder='Digite algo'
           ref={taskNameInpult}
-          disabled={!!state.acitivetask}
+          disabled={!!state.activeTask}
         />
       </div>
       <div className='formRow'>
@@ -84,7 +90,7 @@ export function MainForm() {
         </div>
       )}
       <div className='formRow'>
-        {!state.acitivetask && (
+        {!state.activeTask && (
           <DefaultButton
             aria-label='Iniciar nova tarefa'
             title='Iniciar nova tarefa'
@@ -93,7 +99,7 @@ export function MainForm() {
             key='Enviar'
           />
         )}
-        {!!state.acitivetask && (
+        {!!state.activeTask && (
           <DefaultButton
             aria-label='Parar tarefa atual'
             title='Para tarefa atual'
