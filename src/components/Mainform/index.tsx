@@ -53,6 +53,16 @@ export function MainForm() {
       };
     });
   }
+  function handleInterruptTask() {
+    setState(prevState => {
+      return {
+        ...prevState,
+        acitivetask: null,
+        secondsRemaining: 0,
+        formatedSecondsRemaining: '00:00 ',
+      };
+    });
+  }
   return (
     <form onSubmit={handleCreateNewTask} action='' className='form'>
       <div className='formRow'>
@@ -74,20 +84,24 @@ export function MainForm() {
         </div>
       )}
       <div className='formRow'>
-        {!state.acitivetask ? (
+        {!state.acitivetask && (
           <DefaultButton
             aria-label='Iniciar nova tarefa'
             title='Iniciar nova tarefa'
             type='submit'
             icon={<PlayCircleIcon />}
+            key='Enviar'
           />
-        ) : (
+        )}
+        {!!state.acitivetask && (
           <DefaultButton
             aria-label='Parar tarefa atual'
             title='Para tarefa atual'
             type='button'
             color='red'
             icon={<StopCircleIcon />}
+            onClick={handleInterruptTask}
+            key='Não enviar'
           />
         )}
       </div>
