@@ -9,6 +9,7 @@ import { getNextCycle } from '../../utility/getNextCycle';
 import { getNextCycleType } from '../../utility/getnextCycleType';
 import { TaskActionTypes } from '../../contexts/TaskContext/taskActions';
 import { Tips } from '../Tips';
+import { showMessage } from '../../adapters/showMessage';
 
 export function MainForm() {
   const { state, dispatch } = useTaskContext();
@@ -21,13 +22,14 @@ export function MainForm() {
 
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    showMessage.dismiss();
 
     if (taskNameInpult.current === null) return;
 
     const taskName = taskNameInpult.current.value.trim();
 
     if (!taskName) {
-      alert('Digite o nome da tarefa');
+      showMessage.warn('Digite o nome da tarefa');
       return;
     }
 
@@ -42,8 +44,12 @@ export function MainForm() {
     };
 
     dispatch({ type: TaskActionTypes.START_TASK, payload: newTask });
+    showMessage.success('Tarefa Iniciada');
   }
   function handleInterruptTask() {
+    showMessage.dismiss();
+    showMessage.error('Tarefa interrompida !');
+
     dispatch({ type: TaskActionTypes.INTERRUPT_TASK });
   }
   return (
