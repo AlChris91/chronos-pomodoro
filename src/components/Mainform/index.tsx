@@ -15,9 +15,9 @@ export function MainForm() {
   const { state, dispatch } = useTaskContext();
 
   const taskNameInpult = useRef<HTMLInputElement>(null);
+  const lastTaskName = state.task[state.task.length - 1]?.name || '';
 
   const nextCycle = getNextCycle(state.currentCycle);
-
   const nextCycleType = getNextCycleType(nextCycle);
 
   function handleCreateNewTask(event: React.FormEvent<HTMLFormElement>) {
@@ -58,10 +58,11 @@ export function MainForm() {
         <DefaultInput
           id='meuinput'
           type='text'
-          labelText='Task'
+          labelText='Minha Tarefa é'
           placeholder='Digite algo'
           ref={taskNameInpult}
           disabled={!!state.activeTask}
+          defaultValue={lastTaskName}
         />
       </div>
       <div className='formRow'>

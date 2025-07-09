@@ -43,6 +43,8 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
       console.log('Worker terminado por falta de activeTask');
       worker.terminate();
     }
+    document.title = `Chronos Pomodoro - ${state.formatedSecondsRemaining} `;
+
     worker.postMessage(state);
   }, [worker, state]);
 
