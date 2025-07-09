@@ -3,7 +3,7 @@ import { GenericHtml } from '../../components/GenericHtml';
 import { Heading } from '../../components/Heading/Index';
 import { MainTemplate } from '../../template/MainTemplate';
 
-export function NotFoun() {
+export function NotFound() {
   return (
     <MainTemplate>
       <Container>
