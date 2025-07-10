@@ -15,7 +15,7 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
   const [state, dispatch] = useReducer(taskReducer, initialTaskState, () => {
     const storageState = localStorage.getItem('state');
 
-    if (!storageState) return initialTaskState;
+    if (storageState === null) return initialTaskState;
     const parsedStorageState = JSON.parse(storageState) as TaskStateModel;
 
     return {
@@ -35,7 +35,6 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
 
     if (countDownSeconds <= 0) {
       if (playBeepRef.current) {
-        console.log('tocando audio');
         playBeepRef.current();
         playBeepRef.current = null;
       }
@@ -55,7 +54,6 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
     localStorage.setItem('state', JSON.stringify(state));
 
     if (!state.activeTask) {
-      console.log('Worker terminado por falta de activeTask');
       worker.terminate();
     }
     document.title = `Chronos Pomodoro - ${state.formatedSecondsRemaining} `;
@@ -65,10 +63,8 @@ export function TaskContextProvider({ children }: TaskContextProviderProps) {
 
   useEffect(() => {
     if (state.activeTask && playBeepRef.current === null) {
-      console.log('carregando audio');
       playBeepRef.current = loadBeep();
     } else {
-      console.log('zerando audio');
       playBeepRef.current = null;
     }
   }, [state.activeTask]);

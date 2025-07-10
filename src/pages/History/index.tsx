@@ -8,10 +8,11 @@ import { useTaskContext } from '../../contexts/TaskContext/useTaskContext';
 import { formatDate } from '../../utility/formatDate';
 import { getTaskStatus } from '../../utility/getTaskStatus';
 import { sortTasks, type SortTasksOptions } from '../../utility/sortTasks';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { TaskActionTypes } from '../../contexts/TaskContext/taskActions';
 
 export function History() {
-  const { state } = useTaskContext();
+  const { state, dispatch } = useTaskContext();
   const [sortTaskOptions, setSortTaskOptions] = useState<SortTasksOptions>(
     () => {
       return {
@@ -21,6 +22,15 @@ export function History() {
       };
     },
   );
+  useEffect(() => {
+    setSortTaskOptions(prevState => ({
+      ...prevState,
+      tasks: state.task,
+      direction: prevState.direction,
+      field: prevState.field,
+    }));
+  }, [state.task]);
+
   function handleSortTasks({ field }: Pick<SortTasksOptions, 'field'>) {
     const newDirection = sortTaskOptions.direction === 'desc' ? 'asc' : 'desc';
 
@@ -35,6 +45,12 @@ export function History() {
     });
   }
 
+  function handleResetHistory() {
+    if (!confirm('Tem certeza?')) return;
+
+    dispatch({ type: TaskActionTypes.RESET_STATE });
+  }
+
   return (
     <MainTemplate>
       <Container>
@@ -46,6 +62,7 @@ export function History() {
               color='red'
               aria-label='Apagar todo o histórico'
               title='Apagar Histórico'
+              onClick={handleResetHistory}
             />
           </span>
         </Heading>
@@ -94,14 +111,6 @@ export function History() {
                   </tr>
                 );
               })}
-              ,
-              <tr>
-                <td>Estudar</td>
-                <td>25min</td>
-                <td>10/07/2025 10:05</td>
-                <td>Completa</td>
-                <td>Foco</td>
-              </tr>
             </tbody>
           </table>
         </div>
