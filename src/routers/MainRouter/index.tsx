@@ -4,6 +4,7 @@ import { Home } from '../../pages/Home';
 import { NotFound } from '../../pages/NotFound';
 import { ScrollToTop } from '../../components/ScrollToTop';
 import { History } from '../../pages/History';
+import { Settings } from '../../pages/Settings';
 
 export function MainRouter() {
   return (
@@ -11,6 +12,7 @@ export function MainRouter() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/history' element={<History />} />
+        <Route path='/settings' element={<Settings />} />
         <Route path='/about-pomodoro' element={<AboutPomodoro />} />
 
         <Route path='*' element={<NotFound />} />
