@@ -44,6 +44,9 @@ export function History() {
       showMessage.dismiss();
     };
   }, []);
+  useEffect(() => {
+    document.title = 'Histórico - Chronos Pomodoro';
+  }, []);
   function handleSortTasks({ field }: Pick<SortTasksOptions, 'field'>) {
     const newDirection = sortTaskOptions.direction === 'desc' ? 'asc' : 'desc';
 
